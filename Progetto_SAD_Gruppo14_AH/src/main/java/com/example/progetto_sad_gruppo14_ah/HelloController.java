@@ -1,26 +1,15 @@
 package com.example.progetto_sad_gruppo14_ah;
 
 import com.example.Command.*;
-import com.example.Factory.EllisseFactory;
-import com.example.Factory.FiguraFactory;
-import com.example.Factory.RettangoloFactory;
-import com.example.Factory.SegmentoFactory;
-import com.example.Factory.GrigliaFactory;
+import com.example.Factory.*;
 import com.example.Model.LavagnaModel;
 import com.example.State.DisegnaRettangoloStato;
 import com.example.View.LavagnaView;
 import javafx.fxml.FXML;
-import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import com.example.State.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.stage.FileChooser;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 
 public class HelloController{
@@ -130,8 +119,7 @@ public class HelloController{
 
         rettangoloButton.setOnAction(e -> {
             if (rettangoloButton.isSelected()) {
-                statoManager.setStato(new DisegnaRettangoloStato(lavagna, lavagnaModel, strokeColorPicker, fillColorPicker));
-                //lavagnaModel.deselezionaFigura(FiguraSelezionataManager.getInstance().get());
+                statoManager.setStato(new DisegnaRettangoloStato(lavagnaView, lavagnaModel, strokeColorPicker, fillColorPicker));
             } else {
 
                 statoManager.setStato(new IdleStato());
@@ -141,8 +129,7 @@ public class HelloController{
 
         segmentoButton.setOnAction(e -> {
             if (segmentoButton.isSelected()) {
-                statoManager.setStato(new DisegnaSegmentoStato(lavagna, lavagnaModel, strokeColorPicker, fillColorPicker));
-                //lavagnaModel.deselezionaFigura(FiguraSelezionataManager.getInstance().get());
+                statoManager.setStato(new DisegnaSegmentoStato(lavagnaView, lavagnaModel, strokeColorPicker, fillColorPicker));
             } else {
 
                 statoManager.setStato(new IdleStato());
@@ -152,8 +139,7 @@ public class HelloController{
 
         ellisseButton.setOnAction(e -> {
             if (ellisseButton.isSelected()) {
-                statoManager.setStato(new DisegnaEllisseStato(lavagna, lavagnaModel, strokeColorPicker, fillColorPicker));
-               // lavagnaModel.deselezionaFigura(FiguraSelezionataManager.getInstance().get());
+                statoManager.setStato(new DisegnaEllisseStato(lavagnaView, lavagnaModel, strokeColorPicker, fillColorPicker));
             } else {
                 System.out.println("ho deselezionato ellisse button");
                 statoManager.setStato(new IdleStato());;

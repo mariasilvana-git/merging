@@ -6,6 +6,9 @@ import com.example.Command.Invoker;
 import com.example.Factory.RettangoloFactory;
 import com.example.Factory.SegmentoFactory;
 import com.example.Model.LavagnaModel;
+import com.example.View.LavagnaView;
+import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -19,30 +22,35 @@ public class DisegnaSegmentoStato implements Stato {
     private AnchorPane lavagna;
     private LavagnaModel model;
     private ColorPicker strokeColor, fillColor;
+    private Group figureInserite;
 
 
-    public DisegnaSegmentoStato(AnchorPane lavagna, LavagnaModel model, ColorPicker strokeColor, ColorPicker fillColor) {
+    public DisegnaSegmentoStato(LavagnaView lavagnaView , LavagnaModel model, ColorPicker strokeColor, ColorPicker fillColor) {
         this.lavagna = lavagna;
         this.model = model;
         this.strokeColor = strokeColor;
         this.fillColor = fillColor;
+        this.figureInserite = lavagnaView.getFigureZoomabili();
     }
 
     @Override
     public void onMousePressed(MouseEvent event) {
-
-        x1 = event.getX();
-        y1 = event.getY();
+        Point2D punto = figureInserite.sceneToLocal(event.getSceneX(), event.getSceneY());
+        x1 = punto.getX();
+        y1 = punto.getY();
         figuraTemporanea = new Line(x1, y1, x1, y1);
         figuraTemporanea.setStroke(strokeColor.getValue());
-        lavagna.getChildren().add(figuraTemporanea);
+        figureInserite.getChildren().add((figuraTemporanea));
+
 
     }
 
     @Override
     public void onMouseDragged(MouseEvent e) {
-        double x2 = e.getX();
-        double y2 = e.getY();
+        Point2D punto = figureInserite.sceneToLocal(e.getSceneX(), e.getSceneY());
+        double x2 = punto.getX();
+        double y2 = punto.getY();
+
 
         figuraTemporanea.setEndX(x2);
         figuraTemporanea.setEndY(y2);
@@ -52,10 +60,11 @@ public class DisegnaSegmentoStato implements Stato {
 
     @Override
     public void onMouseReleased(MouseEvent e) {
-        double x2 = e.getX();
-        double y2 = e.getY();
+        Point2D punto = figureInserite.sceneToLocal(e.getSceneX(), e.getSceneY());
+        double x2 = punto.getX();
+        double y2 = punto.getY();
 
-        lavagna.getChildren().remove(figuraTemporanea);
+        figureInserite.getChildren().remove((figuraTemporanea));
 
         // Usa Command se vuoi supportare Undo
         Command cmd = new AggiungiFiguraCommand(model, new SegmentoFactory(), x1, y1, x2, y2, strokeColor.getValue(), fillColor.getValue());
