@@ -48,16 +48,19 @@ public class LavagnaView implements Runnable{
 
         handle = null;
         handle_1 = null;
+
         figureZoomabili.getChildren().clear();
+
         Node griglia = LavagnaModel.getInstance().getGriglia().creaNodoJavaFX();
-        lavagna.getChildren().add(griglia);
-        //aggiungiFiguraZoomabile(griglia);
+        //lavagna.getChildren().add(griglia);
+        aggiungiFiguraZoomabile(griglia);
 
         for (Figura f : LavagnaModel.getInstance().getFigure()) {
 
             System.out.println("Sto aggiornando la lavagna.");
 
             Node nodo = f.creaNodoJavaFX();
+            aggiungiFiguraZoomabile(nodo);
 
             nodo.setOnMouseClicked(event -> {
                 FiguraSelezionataManager.getInstance().set(f);
@@ -66,24 +69,31 @@ public class LavagnaView implements Runnable{
 
                 StatoManager.getInstance().setStato(new SelezionaFiguraStato());
 
+
             });
 
 
-            lavagna.getChildren().add(nodo);
 
         }
+
 
         // gestione figura selezionata, handle e toFront()
         if (FiguraSelezionataManager.getInstance().get() != null) {
 
             Figura f = FiguraSelezionataManager.getInstance().get();
 
+            f.getNodo().toFront();
+
                 double hx = Math.max(f.getX1(), f.getX2());
                 double hy = Math.max(f.getY1(), f.getY2());
 
                 handle = new Circle(hx, hy, 5, Color.BROWN);
-
                 handle.setCursor(Cursor.SE_RESIZE);
+                handle.toFront();
+
+                aggiungiFiguraZoomabile(handle);
+
+
 
                 handle.setOnMousePressed(event -> {
 
@@ -97,9 +107,7 @@ public class LavagnaView implements Runnable{
 
                 });
 
-                lavagna.getChildren().add(handle);
-                f.getNodo().toFront();
-                handle.toFront();
+
 
                 // gestione handle spostamento
 
@@ -108,8 +116,9 @@ public class LavagnaView implements Runnable{
 
                 handle_1 = new Circle(hx_1, hy_1, 5, Color.GRAY);
                 handle_1.setCursor(Cursor.MOVE);
-                lavagna.getChildren().add(handle_1);
                 handle_1.toFront();
+
+                aggiungiFiguraZoomabile(handle_1);
 
                 handle_1.setOnMousePressed(event -> {
 
@@ -119,12 +128,12 @@ public class LavagnaView implements Runnable{
 
 
 
-
-
-
         }
 
-        }
+        lavagna.getChildren().add(figureZoomabili);
+
+
+    }
 
 
 

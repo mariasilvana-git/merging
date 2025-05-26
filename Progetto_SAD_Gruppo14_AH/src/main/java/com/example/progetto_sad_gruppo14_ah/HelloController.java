@@ -114,14 +114,14 @@ public class HelloController{
             if (zoom_in.isSelected())
                 statoManager.setStato(new ZoomInStato(lavagnaView));
             else
-                statoManager.setStato(null);
+                statoManager.setStato(new IdleStato());
         });
 
         zoom_out.setOnAction((e) -> {
             if (zoom_out.isSelected())
                 statoManager.setStato(new ZoomOutStato(lavagnaView));
             else
-                statoManager.setStato(null);
+                statoManager.setStato(new IdleStato());
         });
 
         resetZoomButton.setOnAction((event) -> {
