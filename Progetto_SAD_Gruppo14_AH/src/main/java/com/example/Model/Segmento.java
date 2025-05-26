@@ -17,7 +17,7 @@ public class Segmento extends Figura {
 
         this.setNodo(line);
 
-        line.setStrokeWidth(1);
+        line.setStrokeWidth(2);
         line.setStroke(strokeColor);
         line.setUserData(this);
 

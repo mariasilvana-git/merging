@@ -5,6 +5,7 @@ import com.example.Factory.EllisseFactory;
 import com.example.Factory.FiguraFactory;
 import com.example.Factory.RettangoloFactory;
 import com.example.Factory.SegmentoFactory;
+import com.example.Factory.GrigliaFactory;
 import com.example.Model.LavagnaModel;
 import com.example.State.DisegnaRettangoloStato;
 import com.example.View.LavagnaView;
@@ -13,6 +14,8 @@ import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import com.example.State.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -25,15 +28,30 @@ public class HelloController{
     @FXML
     private AnchorPane lavagna;
     @FXML
+    private TextField nRighe;
+    @FXML
+    private TextField nColonne;
+    @FXML
+    private ToggleButton zoom_in;
+    @FXML
+    private ToggleButton zoom_out;
+    @FXML
+    private Button resetZoomButton;
+    @FXML
     private ToggleButton segmentoButton;
     @FXML
     private ToggleButton ellisseButton;
     @FXML
     private ToggleButton rettangoloButton;
     @FXML
+    private ToggleButton grigliaButton;
+    @FXML
     private MenuItem salvaConNome;
     @FXML
     private MenuItem caricaFile;
+
+    @FXML
+    private ToggleButton selezioneButton;
 
     @FXML
     private ColorPicker strokeColorPicker;
@@ -55,6 +73,61 @@ public class HelloController{
         lavagnaModel = LavagnaModel.getInstance();
         lavagnaView = LavagnaView.getInstance(lavagna);
 
+        Invoker.getInstance().executeCommand(new RimuoviGrigliaCommand(new GrigliaFactory(), lavagna.getWidth(), lavagna.getHeight(), Color.LIGHTGRAY));
+
+
+        lavagna.heightProperty().addListener((observable, oldValue, newValue) -> {
+            Command cmd = new AggiungiGrigliaCommand(lavagnaModel, new GrigliaFactory(),Integer.parseInt(nRighe.getText()), Integer.parseInt(nColonne.getText()), lavagna.getWidth(), (double) newValue, Color.LIGHTGRAY);
+            if(grigliaButton.isSelected()){
+                cmd.execute();}
+        });
+
+        lavagna.widthProperty().addListener((observable, oldValue, newValue) -> {
+            Command cmd = new AggiungiGrigliaCommand(lavagnaModel, new GrigliaFactory(),Integer.parseInt(nRighe.getText()), Integer.parseInt(nColonne.getText()), (double) newValue, lavagna.getHeight(), Color.LIGHTGRAY);
+            if(grigliaButton.isSelected()){
+                cmd.execute();}
+        });
+
+        nRighe.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                int nRighe = Integer.parseInt(newValue);
+                Command cmd = new AggiungiGrigliaCommand(lavagnaModel, new GrigliaFactory(),nRighe, Integer.parseInt(nColonne.getText()), lavagna.getWidth(), lavagna.getHeight(), Color.LIGHTGRAY);
+                if(grigliaButton.isSelected()){
+                    cmd.execute();}
+            } catch (NumberFormatException e) {
+                System.out.println("Valore non numerico");
+            }
+        });
+
+        nColonne.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                int nColonne = Integer.parseInt(newValue);
+                Command cmd = new AggiungiGrigliaCommand(lavagnaModel, new GrigliaFactory(), Integer.parseInt(nRighe.getText()), nColonne, lavagna.getWidth(), lavagna.getHeight(), Color.LIGHTGRAY);
+                if(grigliaButton.isSelected()){
+                    cmd.execute();}
+            } catch (NumberFormatException e) {
+                System.out.println("Valore non numerico");
+            }
+        });
+
+        zoom_in.setOnAction((e) -> {
+            if (zoom_in.isSelected())
+                statoManager.setStato(new ZoomInStato(lavagnaView));
+            else
+                statoManager.setStato(null);
+        });
+
+        zoom_out.setOnAction((e) -> {
+            if (zoom_out.isSelected())
+                statoManager.setStato(new ZoomOutStato(lavagnaView));
+            else
+                statoManager.setStato(null);
+        });
+
+        resetZoomButton.setOnAction((event) -> {
+            Invoker.getInstance().executeCommand(new ResetZoomCommand(lavagnaView));
+        });
+
         rettangoloButton.setOnAction(e -> {
             if (rettangoloButton.isSelected()) {
                 statoManager.setStato(new DisegnaRettangoloStato(lavagna, lavagnaModel, strokeColorPicker, fillColorPicker));
@@ -64,6 +137,7 @@ public class HelloController{
                 statoManager.setStato(new IdleStato());
             }
         });
+
 
         segmentoButton.setOnAction(e -> {
             if (segmentoButton.isSelected()) {
@@ -86,16 +160,13 @@ public class HelloController{
             }
         });
 
-       /* selezioneButton.setOnAction(e -> {
-            if (selezioneButton.isSelected()) {
-                statoManager.setStato(new SelezionaFiguraStato(lavagnaModel));
-                //lavagna.setCursor(Cursor.HAND);
+        grigliaButton.setOnAction(e -> {
+            if(grigliaButton.isSelected())
+                Invoker.getInstance().executeCommand(new AggiungiGrigliaCommand(lavagnaModel, new GrigliaFactory(),Integer.parseInt(nRighe.getText()), Integer.parseInt(nColonne.getText()), lavagna.getWidth(), lavagna.getHeight(), Color.LIGHTGRAY));
+            else
+                Invoker.getInstance().executeCommand(new RimuoviGrigliaCommand(new GrigliaFactory(), lavagna.getWidth(), lavagna.getHeight(), Color.LIGHTGRAY));
+            });
 
-            } else {
-
-                statoManager.setStato(null);;
-            }
-        });*/
 
         lavagna.setOnMousePressed(event ->{
             statoManager.getStato().onMousePressed(event);
@@ -105,8 +176,6 @@ public class HelloController{
             statoManager.getStato().onMouseDragged(event);
 
         });
-
-
 
         lavagna.setOnMouseReleased(event ->{
             statoManager.getStato().onMouseReleased(event);

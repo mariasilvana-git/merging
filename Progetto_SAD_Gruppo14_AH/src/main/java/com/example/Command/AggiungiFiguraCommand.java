@@ -28,9 +28,6 @@ public class AggiungiFiguraCommand implements Command {
         Figura figura = figuraFactory.creaFigura(x1, y1, x2 , y2, strokeColor, fillColor );
 
         lavagnaModel.aggiungiFigura(figura);
-
-
-
     }
 }
 

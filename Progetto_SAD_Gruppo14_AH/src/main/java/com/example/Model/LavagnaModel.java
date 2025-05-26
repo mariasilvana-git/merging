@@ -1,6 +1,8 @@
 package com.example.Model;
 
 
+import javafx.scene.paint.Color;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -9,6 +11,7 @@ public class LavagnaModel {
     private static LavagnaModel instance;
     private List<Figura> figure = new ArrayList<>();
     private List<Runnable> osservatori = new ArrayList<>();
+    Griglia griglia;
     //private Figura figuraSelezionata;
 
     public static LavagnaModel getInstance(){
@@ -26,6 +29,20 @@ public class LavagnaModel {
     public void deselezionaFigura(Figura figura){
 
         notificaOsservatori();
+    }
+
+    public void rimuoviGriglia(Griglia griglia){
+        this.griglia = griglia;
+        notificaOsservatori();
+    }
+
+    public void aggiungiGriglia(Griglia griglia){
+        this.griglia = griglia;
+        notificaOsservatori();
+    }
+
+    public Griglia getGriglia(){
+        return griglia;
     }
 
     public void ridimensionaFigura(Figura figura, double x2, double y2){
@@ -71,9 +88,6 @@ public class LavagnaModel {
             r.run();
         }
     }
-
-
-
 
 
 }

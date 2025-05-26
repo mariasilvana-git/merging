@@ -4,6 +4,7 @@ import com.example.Model.LavagnaModel;
 import com.example.State.*;
 //import com.example.State.FiguraSelezionataManager;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -15,6 +16,7 @@ public class LavagnaView implements Runnable{
 
     private static LavagnaView instance;
     private AnchorPane lavagna;
+    private Group figureZoomabili = new Group();
     private Circle handle;
     private Circle handle_1;
 
@@ -26,12 +28,19 @@ public class LavagnaView implements Runnable{
     }
 
 
+    public Group getFigureZoomabili() {
+        return figureZoomabili;
+    }
+
     public LavagnaView(AnchorPane lavagna){
 
         this.lavagna = lavagna;
         LavagnaModel.getInstance().aggiungiOsservatore(this);
     }
 
+    private void aggiungiFiguraZoomabile(Node nodo){
+        figureZoomabili.getChildren().add(nodo);
+    }
 
     public void aggiornaLavagna(){
 
@@ -39,6 +48,10 @@ public class LavagnaView implements Runnable{
 
         handle = null;
         handle_1 = null;
+        figureZoomabili.getChildren().clear();
+        Node griglia = LavagnaModel.getInstance().getGriglia().creaNodoJavaFX();
+        lavagna.getChildren().add(griglia);
+        //aggiungiFiguraZoomabile(griglia);
 
         for (Figura f : LavagnaModel.getInstance().getFigure()) {
 
@@ -54,6 +67,7 @@ public class LavagnaView implements Runnable{
                 StatoManager.getInstance().setStato(new SelezionaFiguraStato());
 
             });
+
 
             lavagna.getChildren().add(nodo);
 
@@ -102,6 +116,7 @@ public class LavagnaView implements Runnable{
                     StatoManager.getInstance().setStato(new SpostamentoFiguraStato());
 
                 });
+
 
 
 
