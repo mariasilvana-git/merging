@@ -22,10 +22,7 @@ public class Ellisse extends Figura {
         double radiusY = Math.abs(y2 - y1) / 2;
 
         Ellipse e = new Ellipse(centerX, centerY, radiusX, radiusY);
-
-        this.setNodo(e);
-
-        e.setStrokeWidth(1);
+        e.setStrokeWidth(3);
         e.setStroke(strokeColor);
         e.setFill(fillColor);
         e.setUserData(this);

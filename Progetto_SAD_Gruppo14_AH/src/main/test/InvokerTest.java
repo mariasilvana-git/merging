@@ -22,6 +22,12 @@ public class InvokerTest {
             public void execute() {
                 eseguito = true;
             }
+            @Override
+            public void undo() {}
+            @Override
+            public boolean isUndoable() {
+                return false;
+            }
         }
 
         ComandoFinto cmd = new ComandoFinto();

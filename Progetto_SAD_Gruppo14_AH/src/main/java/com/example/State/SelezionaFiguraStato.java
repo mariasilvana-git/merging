@@ -4,20 +4,19 @@ import com.example.Model.Figura;
 import com.example.Model.LavagnaModel;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Circle;
 
 
 public class SelezionaFiguraStato implements Stato {
 
 
+    private LavagnaModel model;
     FiguraSelezionataManager figuraSelezionataManager = FiguraSelezionataManager.getInstance();
 
 
 
-    public SelezionaFiguraStato() {
+    public SelezionaFiguraStato(LavagnaModel model) {
 
-
-        LavagnaModel.getInstance().notificaOsservatori();
+        this.model = model;
 
     }
 
@@ -26,25 +25,20 @@ public class SelezionaFiguraStato implements Stato {
         Object source = event.getTarget();
 
         if (source instanceof Node node && node.getUserData() instanceof Figura figura) {
-
             if (figuraSelezionataManager.get() == figura) {
                 figuraSelezionataManager.clear();
                 LavagnaModel.getInstance().deselezionaFigura(figura);
-
             } else {
                 figuraSelezionataManager.set(figura);
                 LavagnaModel.getInstance().selezionaFigura(figura);
 
-
             }
-        } else if(!(source instanceof Circle circle))  {
+        } else  {
             // click sulla lavagna → deseleziona
             Figura figuraSelezionata = figuraSelezionataManager.get();
             if (figuraSelezionata != null) {
-
                 figuraSelezionataManager.clear();
                 LavagnaModel.getInstance().deselezionaFigura(figuraSelezionata);
-
             }
         }
     }

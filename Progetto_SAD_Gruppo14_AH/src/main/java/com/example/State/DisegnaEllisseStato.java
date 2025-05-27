@@ -5,9 +5,6 @@ import com.example.Command.Command;
 import com.example.Command.Invoker;
 import com.example.Factory.EllisseFactory;
 import com.example.Model.LavagnaModel;
-import com.example.View.LavagnaView;
-import javafx.geometry.Point2D;
-import javafx.scene.Group;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -22,37 +19,32 @@ public class DisegnaEllisseStato implements Stato{
     LavagnaModel lavagnaModel;
     ColorPicker strokeColor;
     ColorPicker fillColor;
-    private Group figureInserite;
 
 
-    public DisegnaEllisseStato(LavagnaView lavagnaView, LavagnaModel lavagnaModel, ColorPicker strokeColor, ColorPicker fillColor) {
+    public DisegnaEllisseStato(AnchorPane lavagna, LavagnaModel lavagnaModel, ColorPicker strokeColor, ColorPicker fillColor) {
         this.lavagna= lavagna;
         this.lavagnaModel = lavagnaModel;
         this.strokeColor = strokeColor;
         this.fillColor = fillColor;
-        this.figureInserite = lavagnaView.getFigureZoomabili();
-
 
     }
     @Override
     public void onMousePressed(MouseEvent event) {
-        Point2D punto = figureInserite.sceneToLocal(event.getSceneX(), event.getSceneY());
-        x1 = punto.getX();
-        y1 = punto.getY();
+        x1 = event.getX();
+        y1 = event.getY();
 
         figuraTemporanea = new Ellipse(x1, y1, 0, 0);
         figuraTemporanea.setFill(fillColor.getValue());
         figuraTemporanea.setStroke(strokeColor.getValue());
 
-        figureInserite.getChildren().add((figuraTemporanea));
+        lavagna.getChildren().add(figuraTemporanea);
 
     }
 
     @Override
     public void onMouseDragged(MouseEvent event) {
-        Point2D punto = figureInserite.sceneToLocal(event.getSceneX(), event.getSceneY());
-        double x2 = punto.getX();
-        double y2 = punto.getY();
+        double x2 = event.getX();
+        double y2 = event.getY();
 
         double centerX = (x1 + x2) / 2;
         double centerY = (y1 + y2) / 2;
@@ -69,13 +61,17 @@ public class DisegnaEllisseStato implements Stato{
 
     @Override
     public void onMouseReleased(MouseEvent event) {
-        Point2D punto = figureInserite.sceneToLocal(event.getSceneX(), event.getSceneY());
-        double x2 = punto.getX();
-        double y2 = punto.getY();
+        double x2 = event.getX();
+        double y2 = event.getY();
 
-        figureInserite.getChildren().remove((figuraTemporanea));
+        lavagna.getChildren().remove(figuraTemporanea);
+        if(x1<0 || y1<0 || x2<0 || y2<0) {
+            figuraTemporanea = null;
+            return;
+        }
         Command cmd = new AggiungiFiguraCommand(lavagnaModel,
                                                 new EllisseFactory(),
+                                                lavagna,
                                                 x1, y1, x2, y2,
                                                 strokeColor.getValue(),
                                                 fillColor.getValue());
@@ -83,5 +79,4 @@ public class DisegnaEllisseStato implements Stato{
         figuraTemporanea = null;
 
     }
-
 }

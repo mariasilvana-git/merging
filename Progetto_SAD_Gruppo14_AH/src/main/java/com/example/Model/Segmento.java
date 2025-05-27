@@ -14,14 +14,9 @@ public class Segmento extends Figura {
     @Override
     public Line creaNodoJavaFX() {
         Line line = new Line(x1, y1, x2, y2);
-
-        this.setNodo(line);
-
-        line.setStrokeWidth(2);
+        line.setStrokeWidth(3);
         line.setStroke(strokeColor);
         line.setUserData(this);
-
-
 
         if (FiguraSelezionataManager.getInstance().get() == this) {
             line.setEffect(new DropShadow(20, Color.GREY));
