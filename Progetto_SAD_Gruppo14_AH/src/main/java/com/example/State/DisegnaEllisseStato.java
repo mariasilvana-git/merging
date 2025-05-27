@@ -25,12 +25,12 @@ public class DisegnaEllisseStato implements Stato{
     private Group figureInserite;
 
 
-    public DisegnaEllisseStato(LavagnaView lavagnaView, LavagnaModel lavagnaModel, ColorPicker strokeColor, ColorPicker fillColor) {
+    public DisegnaEllisseStato(AnchorPane lavagna, LavagnaModel lavagnaModel, ColorPicker strokeColor, ColorPicker fillColor) {
         this.lavagna= lavagna;
         this.lavagnaModel = lavagnaModel;
         this.strokeColor = strokeColor;
         this.fillColor = fillColor;
-        this.figureInserite = lavagnaView.getFigureZoomabili();
+        this.figureInserite = LavagnaView.getInstance().getFigureZoomabili();
 
 
     }
@@ -74,8 +74,13 @@ public class DisegnaEllisseStato implements Stato{
         double y2 = punto.getY();
 
         figureInserite.getChildren().remove((figuraTemporanea));
+        if(x1<0 || y1<0 || x2<0 || y2<0) {
+            figuraTemporanea = null;
+            return;
+        }
         Command cmd = new AggiungiFiguraCommand(lavagnaModel,
                                                 new EllisseFactory(),
+                                                lavagna,
                                                 x1, y1, x2, y2,
                                                 strokeColor.getValue(),
                                                 fillColor.getValue());

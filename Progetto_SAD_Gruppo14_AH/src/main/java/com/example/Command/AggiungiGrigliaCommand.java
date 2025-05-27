@@ -29,5 +29,12 @@ public class AggiungiGrigliaCommand implements Command {
         Griglia griglia = new Griglia(nRighe, nColonne, x2 , y2, strokeColor);
         LavagnaView.getInstance().aggiungiGriglia(griglia);
     }
-
+    @Override
+    public void undo() {
+        return;
+    }
+    @Override
+    public boolean isUndoable() {
+        return false;
+    }
 }

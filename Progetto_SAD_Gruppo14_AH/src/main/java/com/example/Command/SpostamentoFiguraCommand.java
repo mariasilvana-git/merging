@@ -18,9 +18,14 @@ public class SpostamentoFiguraCommand implements Command {
     @Override
 
     public void execute() {
-
         LavagnaModel.getInstance().spostaFigura(figura, x1, y1);
-
-
+    }
+    @Override
+    public void undo() {
+        return;
+    }
+    @Override
+    public boolean isUndoable() {
+        return false;
     }
 }

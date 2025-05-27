@@ -16,5 +16,13 @@ public class ResetZoomCommand implements Command {
         figureInserite.setTranslateX(0);
         figureInserite.setTranslateY(0);
     }
+    @Override
+    public void undo() {
+        return;
+    }
+    @Override
+    public boolean isUndoable() {
+        return false;
+    }
 
 }

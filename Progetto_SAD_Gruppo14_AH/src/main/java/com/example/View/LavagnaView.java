@@ -34,6 +34,12 @@ public class LavagnaView implements Runnable{
         return instance;
     }
 
+    public LavagnaView(AnchorPane lavagna){
+        this.lavagna = lavagna;
+        lavagna.getChildren().add(figureZoomabili); // Aggiungilo una volta sola
+        LavagnaModel.getInstance().aggiungiOsservatore(this);
+    }
+
     public void aggiungiGriglia(Griglia griglia) {
         this.griglia = griglia.creaNodoJavaFX();
         aggiornaLavagna();
@@ -47,14 +53,6 @@ public class LavagnaView implements Runnable{
     public Group getFigureZoomabili() {
         return figureZoomabili;
     }
-
-
-    public LavagnaView(AnchorPane lavagna){
-            this.lavagna = lavagna;
-            lavagna.getChildren().add(figureZoomabili); // Aggiungilo una volta sola
-            LavagnaModel.getInstance().aggiungiOsservatore(this);
-    }
-
 
 
     private void aggiungiFiguraZoomabile(Node nodo){

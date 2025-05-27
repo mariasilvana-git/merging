@@ -34,9 +34,9 @@
                 <MenuItem fx:id="salvaConNome" mnemonicParsing="false" text="Salva con nome" />
               </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Edit">
+            <Menu fx:id="menuEdit" mnemonicParsing="false" text="Edit">
               <items>
-                <MenuItem mnemonicParsing="false" text="Delete" />
+                <MenuItem fx:id="Elimina" mnemonicParsing="false" text="Delete" />
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
@@ -181,7 +181,34 @@
         </ImageView>
       </graphic>
     </ToggleButton>
+             <Button fx:id="spostaSopraButton" mnemonicParsing="false" prefHeight="36.0" prefWidth="40.0">
+                 <graphic>
+                     <ImageView fitHeight="36.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                         <image>
+                             <Image url="@../../../Images/Freccia%20Su.png" />
+                         </image>
+                     </ImageView>
+                 </graphic>
+             </Button>
 
+             <Button fx:id="spostaSottoButton" mnemonicParsing="false" prefHeight="36.0" prefWidth="40.0">
+                 <graphic>
+                     <ImageView fitHeight="36.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                         <image>
+                             <Image url="@../../../Images/Freccia%20Giu.png" />
+                         </image>
+                     </ImageView>
+                 </graphic>
+             </Button>
+            <Button fx:id="undoButton" mnemonicParsing="false" prefHeight="36.0" prefWidth="40.0">
+               <graphic>
+                  <ImageView fitHeight="36.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../Images/Undo.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
          <padding>
             <Insets left="20.0" right="20.0" top="20.0" />
@@ -189,9 +216,9 @@
       </VBox>
    </left>
    <center>
-      <ScrollPane fx:id="scrollPane" BorderPane.alignment="CENTER">
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <content>
-          <AnchorPane fx:id="lavagna" maxHeight="1500.0" maxWidth="1500.0" minHeight="100.0" minWidth="100.0" prefHeight="1500.0" prefWidth="1500.0" style="-fx-background-color: #FFFFFF;" />
+          <AnchorPane fx:id="lavagna" minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="1330.0" style="-fx-border-color: #3062A8;" />
         </content>
       </ScrollPane>
    </center>

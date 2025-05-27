@@ -13,6 +13,8 @@ public class Rettangolo extends Figura {
     public Rettangolo(double x1, double y1, double x2, double y2, Color strokeColor, Color fillColor) {
         super(x1, y1, x2, y2, strokeColor, fillColor);
 
+        larghezza = Math.abs(x2 - x1);
+        altezza = Math.abs(y2 - y1);
         this.x1 = Math.min(x1, x2);
         this.y1 = Math.min(y1, y2);
         this.x2 = Math.max(x1, x2);

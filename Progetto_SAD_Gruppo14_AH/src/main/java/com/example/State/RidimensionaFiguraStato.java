@@ -54,15 +54,13 @@ public class RidimensionaFiguraStato implements Stato {
 
     @Override
     public void onMouseDragged(MouseEvent e) {
-        Point2D punto = LavagnaView.getInstance().getFigureZoomabili().sceneToLocal(e.getX(), e.getY());
+        Point2D punto = LavagnaView.getInstance().getFigureZoomabili().sceneToLocal(e.getSceneX(), e.getSceneY());
         double x2 = punto.getX();
         double y2 = punto.getY();
 
 
         if(x2 > FiguraSelezionataManager.getInstance().get().getX1() && y2 > FiguraSelezionataManager.getInstance().get().getY1()) {
-
             strategy.aggiorna(figuraTemporaneaFX, x1_init, y1_init, x2, y2);
-
         }
 
     }
@@ -77,11 +75,9 @@ public class RidimensionaFiguraStato implements Stato {
         double x2 = punto.getX();
         double y2 = punto.getY();
 
-
         Command cmd = new RidimensionaFiguraCommand(x2, y2);
         Invoker.getInstance().executeCommand(cmd);
         StatoManager.getInstance().setStato(new SelezionaFiguraStato());
-
 
     }
 }

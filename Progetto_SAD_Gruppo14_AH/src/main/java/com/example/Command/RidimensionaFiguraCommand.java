@@ -28,5 +28,13 @@ public class RidimensionaFiguraCommand implements Command {
         }
         LavagnaModel.getInstance().ridimensionaFigura(FiguraSelezionataManager.getInstance().get(), x2, y2);
     }
+    @Override
+    public void undo() {
+        return;
+    }
+    @Override
+    public boolean isUndoable() {
+        return false;
+    }
 
 }

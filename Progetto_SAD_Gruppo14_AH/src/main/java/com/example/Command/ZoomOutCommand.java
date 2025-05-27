@@ -48,4 +48,13 @@ public class ZoomOutCommand implements Command {
          figureInserite.setTranslateY((figureInserite.getTranslateY() - dy) * 0.8);
 
     }
+
+    @Override
+    public void undo() {
+        return;
+    }
+    @Override
+    public boolean isUndoable() {
+        return false;
+    }
 }

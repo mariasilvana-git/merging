@@ -13,6 +13,14 @@ public class RimuoviGrigliaCommand implements Command{
     public void execute(){
         LavagnaView.getInstance().rimuoviGriglia();
     }
+    @Override
+    public void undo() {
+        return;
+    }
+    @Override
+    public boolean isUndoable() {
+        return false;
+    }
 
 
 }

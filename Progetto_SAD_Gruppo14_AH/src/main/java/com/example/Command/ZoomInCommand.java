@@ -38,5 +38,14 @@ public class ZoomInCommand implements Command {
 
         System.out.println("Contenuto zoomato + -> " + figureInserite.getChildren());
     }
+
+    @Override
+    public void undo() {
+        return;
+    }
+    @Override
+    public boolean isUndoable() {
+        return false;
+    }
 }
 
