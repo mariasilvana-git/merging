@@ -5,21 +5,26 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
-public class Griglia extends Figura{
+public class Griglia {
 
-    Group griglia = new Group();
+    double nRighe;
+    double nColonne;
+    double larghezzaLavagna;
+    double altezzaLavagna;
+    Color strokeColor;
 
 
-    public Griglia(double nRighe, double nColonne, double x2, double y2, Color strokeColor, Color fillColor) {
-        super(nRighe, nColonne, x2, y2, strokeColor, fillColor);
+
+    public Griglia(double nRighe, double nColonne, double x2, double y2, Color strokeColor) {
+        this.nRighe = nRighe;
+        this.nColonne = nColonne;
+        this.larghezzaLavagna = x2;
+        this.altezzaLavagna = y2;
+        this.strokeColor = strokeColor;
     }
 
-    @Override
     public Node creaNodoJavaFX() {
-        double nRighe = x1;
-        double nColonne = y1;
-        double larghezzaLavagna = x2;
-        double altezzaLavagna = y2;
+        Group griglia = new Group();
         double spazioTraRighe = altezzaLavagna / nRighe;
         double spazioTraColonne = larghezzaLavagna/nColonne;
 
@@ -41,11 +46,8 @@ public class Griglia extends Figura{
             griglia.getChildren().add(line);
         }
 
-
         griglia.setUserData(this);
 
         return griglia;
     }
-
-
 }

@@ -17,8 +17,6 @@ public class RidimensionaFiguraCommand implements Command {
     double y1 = FiguraSelezionataManager.getInstance().get().getY1();
 
 
-
-
     public void execute() {
 
         if(x2<x1){
@@ -31,10 +29,4 @@ public class RidimensionaFiguraCommand implements Command {
         LavagnaModel.getInstance().ridimensionaFigura(FiguraSelezionataManager.getInstance().get(), x2, y2);
     }
 
-    /*public void undo() {
-
-    LavagnaModel.getInstance().ridimensionaFigura(figura, x1 click su handle, y1 click su handle);
-
-
-    }*/
 }

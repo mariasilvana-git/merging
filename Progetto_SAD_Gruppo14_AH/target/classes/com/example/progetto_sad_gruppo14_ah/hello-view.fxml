@@ -189,9 +189,9 @@
       </VBox>
    </left>
    <center>
-      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ScrollPane fx:id="scrollPane" BorderPane.alignment="CENTER">
         <content>
-          <AnchorPane fx:id="lavagna" minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="1330.0" style="-fx-background-color: #FFFFFF;" />
+          <AnchorPane fx:id="lavagna" maxHeight="1500.0" maxWidth="1500.0" minHeight="100.0" minWidth="100.0" prefHeight="1500.0" prefWidth="1500.0" style="-fx-background-color: #FFFFFF;" />
         </content>
       </ScrollPane>
    </center>

@@ -39,8 +39,6 @@ public class HelloController{
     @FXML
     private MenuItem caricaFile;
 
-    @FXML
-    private ToggleButton selezioneButton;
 
     @FXML
     private ColorPicker strokeColorPicker;
@@ -62,17 +60,17 @@ public class HelloController{
         lavagnaModel = LavagnaModel.getInstance();
         lavagnaView = LavagnaView.getInstance(lavagna);
 
-        Invoker.getInstance().executeCommand(new RimuoviGrigliaCommand(new GrigliaFactory(), lavagna.getWidth(), lavagna.getHeight(), Color.LIGHTGRAY));
+        Invoker.getInstance().executeCommand(new RimuoviGrigliaCommand());
 
 
         lavagna.heightProperty().addListener((observable, oldValue, newValue) -> {
-            Command cmd = new AggiungiGrigliaCommand(lavagnaModel, new GrigliaFactory(),Integer.parseInt(nRighe.getText()), Integer.parseInt(nColonne.getText()), lavagna.getWidth(), (double) newValue, Color.LIGHTGRAY);
+            Command cmd = new AggiungiGrigliaCommand(Integer.parseInt(nRighe.getText()), Integer.parseInt(nColonne.getText()), lavagna.getWidth(), (double) newValue, Color.LIGHTGRAY);
             if(grigliaButton.isSelected()){
                 cmd.execute();}
         });
 
         lavagna.widthProperty().addListener((observable, oldValue, newValue) -> {
-            Command cmd = new AggiungiGrigliaCommand(lavagnaModel, new GrigliaFactory(),Integer.parseInt(nRighe.getText()), Integer.parseInt(nColonne.getText()), (double) newValue, lavagna.getHeight(), Color.LIGHTGRAY);
+            Command cmd = new AggiungiGrigliaCommand(Integer.parseInt(nRighe.getText()), Integer.parseInt(nColonne.getText()), (double) newValue, lavagna.getHeight(), Color.LIGHTGRAY);
             if(grigliaButton.isSelected()){
                 cmd.execute();}
         });
@@ -80,7 +78,7 @@ public class HelloController{
         nRighe.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 int nRighe = Integer.parseInt(newValue);
-                Command cmd = new AggiungiGrigliaCommand(lavagnaModel, new GrigliaFactory(),nRighe, Integer.parseInt(nColonne.getText()), lavagna.getWidth(), lavagna.getHeight(), Color.LIGHTGRAY);
+                Command cmd = new AggiungiGrigliaCommand( nRighe, Integer.parseInt(nColonne.getText()), lavagna.getWidth(), lavagna.getHeight(), Color.LIGHTGRAY);
                 if(grigliaButton.isSelected()){
                     cmd.execute();}
             } catch (NumberFormatException e) {
@@ -91,7 +89,7 @@ public class HelloController{
         nColonne.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 int nColonne = Integer.parseInt(newValue);
-                Command cmd = new AggiungiGrigliaCommand(lavagnaModel, new GrigliaFactory(), Integer.parseInt(nRighe.getText()), nColonne, lavagna.getWidth(), lavagna.getHeight(), Color.LIGHTGRAY);
+                Command cmd = new AggiungiGrigliaCommand(Integer.parseInt(nRighe.getText()), nColonne, lavagna.getWidth(), lavagna.getHeight(), Color.LIGHTGRAY);
                 if(grigliaButton.isSelected()){
                     cmd.execute();}
             } catch (NumberFormatException e) {
@@ -148,9 +146,9 @@ public class HelloController{
 
         grigliaButton.setOnAction(e -> {
             if(grigliaButton.isSelected())
-                Invoker.getInstance().executeCommand(new AggiungiGrigliaCommand(lavagnaModel, new GrigliaFactory(),Integer.parseInt(nRighe.getText()), Integer.parseInt(nColonne.getText()), lavagna.getWidth(), lavagna.getHeight(), Color.LIGHTGRAY));
+                Invoker.getInstance().executeCommand(new AggiungiGrigliaCommand(Integer.parseInt(nRighe.getText()), Integer.parseInt(nColonne.getText()), lavagna.getWidth(), lavagna.getHeight(), Color.LIGHTGRAY));
             else
-                Invoker.getInstance().executeCommand(new RimuoviGrigliaCommand(new GrigliaFactory(), lavagna.getWidth(), lavagna.getHeight(), Color.LIGHTGRAY));
+                Invoker.getInstance().executeCommand(new RimuoviGrigliaCommand());
             });
 
 
@@ -165,7 +163,6 @@ public class HelloController{
 
         lavagna.setOnMouseReleased(event ->{
             statoManager.getStato().onMouseReleased(event);
-
         });
 
         salvaConNome.setOnAction(e ->{

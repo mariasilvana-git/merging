@@ -8,6 +8,8 @@ import com.example.Strategy.EllisseTemporaneoStrategy;
 import com.example.Strategy.FiguraTemporaneaStrategy;
 import com.example.Strategy.RettangoloTemporaneoStrategy;
 import com.example.Strategy.SegmentoTemporaneoStrategy;
+import com.example.View.LavagnaView;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.input.MouseEvent;
@@ -32,8 +34,7 @@ public class RidimensionaFiguraStato implements Stato {
 
 
 
-    public RidimensionaFiguraStato(AnchorPane lavagna) {
-        this.lavagna = lavagna;
+    public RidimensionaFiguraStato() {
 
         if (figura instanceof Rettangolo) strategy = new RettangoloTemporaneoStrategy();
         else if (figura instanceof Ellisse) strategy = new EllisseTemporaneoStrategy();
@@ -43,20 +44,20 @@ public class RidimensionaFiguraStato implements Stato {
     @Override
     public void onMousePressed(MouseEvent event) {
 
-        x1 = event.getX();
-        y1 = event.getY();
+        Point2D punto = LavagnaView.getInstance().getFigureZoomabili().sceneToLocal(event.getX(), event.getY());
+        double x1 = punto.getX();
+        double y1 = punto.getY();
 
         figuraTemporaneaFX = strategy.crea(x1, y1);
-        lavagna.getChildren().add(figuraTemporaneaFX);
-
-
+        LavagnaView.getInstance().getFigureZoomabili().getChildren().add(figuraTemporaneaFX);
     }
 
     @Override
     public void onMouseDragged(MouseEvent e) {
+        Point2D punto = LavagnaView.getInstance().getFigureZoomabili().sceneToLocal(e.getX(), e.getY());
+        double x2 = punto.getX();
+        double y2 = punto.getY();
 
-        double x2 = e.getX();
-        double y2 = e.getY();
 
         if(x2 > FiguraSelezionataManager.getInstance().get().getX1() && y2 > FiguraSelezionataManager.getInstance().get().getY1()) {
 
@@ -70,10 +71,12 @@ public class RidimensionaFiguraStato implements Stato {
     @Override
     public void onMouseReleased(MouseEvent e) {
 
-        lavagna.getChildren().remove(figuraTemporaneaFX);
+        LavagnaView.getInstance().getFigureZoomabili().getChildren().remove(figuraTemporaneaFX);
 
-        double x2 = e.getX();
-        double y2 = e.getY();
+        Point2D punto = LavagnaView.getInstance().getFigureZoomabili().sceneToLocal(e.getSceneX(), e.getSceneY());
+        double x2 = punto.getX();
+        double y2 = punto.getY();
+
 
         Command cmd = new RidimensionaFiguraCommand(x2, y2);
         Invoker.getInstance().executeCommand(cmd);

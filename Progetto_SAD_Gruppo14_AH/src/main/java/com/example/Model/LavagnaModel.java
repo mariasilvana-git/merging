@@ -31,8 +31,8 @@ public class LavagnaModel {
         notificaOsservatori();
     }
 
-    public void rimuoviGriglia(Griglia griglia){
-        this.griglia = griglia;
+    public void rimuoviGriglia(){
+        this.griglia = null;
         notificaOsservatori();
     }
 
@@ -66,8 +66,6 @@ public class LavagnaModel {
 
 
     }
-
-
 
     public void aggiungiFigura(Figura figura){
         figure.add(figura);

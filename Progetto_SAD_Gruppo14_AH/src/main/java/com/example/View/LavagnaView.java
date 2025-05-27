@@ -1,5 +1,6 @@
 package com.example.View;
 import com.example.Model.Figura;
+import com.example.Model.Griglia;
 import com.example.Model.LavagnaModel;
 import com.example.State.*;
 //import com.example.State.FiguraSelezionataManager;
@@ -19,6 +20,12 @@ public class LavagnaView implements Runnable{
     private Group figureZoomabili = new Group();
     private Circle handle;
     private Circle handle_1;
+    Node griglia = new Group();
+
+
+    public static LavagnaView getInstance(){
+        return instance;
+    }
 
     public static LavagnaView getInstance(AnchorPane lavagna) {
         if (instance == null) {
@@ -27,33 +34,44 @@ public class LavagnaView implements Runnable{
         return instance;
     }
 
+    public void aggiungiGriglia(Griglia griglia) {
+        this.griglia = griglia.creaNodoJavaFX();
+        aggiornaLavagna();
+    }
+
+    public void rimuoviGriglia() {
+        this.griglia = null;
+        aggiornaLavagna();
+    }
 
     public Group getFigureZoomabili() {
         return figureZoomabili;
     }
 
-    public LavagnaView(AnchorPane lavagna){
 
-        this.lavagna = lavagna;
-        LavagnaModel.getInstance().aggiungiOsservatore(this);
+    public LavagnaView(AnchorPane lavagna){
+            this.lavagna = lavagna;
+            lavagna.getChildren().add(figureZoomabili); // Aggiungilo una volta sola
+            LavagnaModel.getInstance().aggiungiOsservatore(this);
     }
+
+
 
     private void aggiungiFiguraZoomabile(Node nodo){
         figureZoomabili.getChildren().add(nodo);
     }
 
-    public void aggiornaLavagna(){
 
-        lavagna.getChildren().clear();
+    public void aggiornaLavagna(){
 
         handle = null;
         handle_1 = null;
 
         figureZoomabili.getChildren().clear();
 
-        Node griglia = LavagnaModel.getInstance().getGriglia().creaNodoJavaFX();
-        //lavagna.getChildren().add(griglia);
-        aggiungiFiguraZoomabile(griglia);
+        if (this.griglia != null)
+            aggiungiFiguraZoomabile(griglia);
+
 
         for (Figura f : LavagnaModel.getInstance().getFigure()) {
 
@@ -65,17 +83,11 @@ public class LavagnaView implements Runnable{
             nodo.setOnMouseClicked(event -> {
                 FiguraSelezionataManager.getInstance().set(f);
 
-                if(!((StatoManager.getInstance().getStato())instanceof SelezionaFiguraStato))
-
+            if(!((StatoManager.getInstance().getStato())instanceof SelezionaFiguraStato))
                 StatoManager.getInstance().setStato(new SelezionaFiguraStato());
 
-
             });
-
-
-
         }
-
 
         // gestione figura selezionata, handle e toFront()
         if (FiguraSelezionataManager.getInstance().get() != null) {
@@ -93,21 +105,14 @@ public class LavagnaView implements Runnable{
 
                 aggiungiFiguraZoomabile(handle);
 
-
-
                 handle.setOnMousePressed(event -> {
 
-                    StatoManager.getInstance().setStato(new RidimensionaFiguraStato(lavagna));
+                    StatoManager.getInstance().setStato(new RidimensionaFiguraStato());
                     System.out.println("inizio a ridimensionare");
-
                 });
-
                 handle.setOnMouseReleased(event -> {
                     System.out.println("ho ridimensionato");
-
                 });
-
-
 
                 // gestione handle spostamento
 
@@ -125,14 +130,7 @@ public class LavagnaView implements Runnable{
                     StatoManager.getInstance().setStato(new SpostamentoFiguraStato());
 
                 });
-
-
-
         }
-
-        lavagna.getChildren().add(figureZoomabili);
-
-
     }
 
 

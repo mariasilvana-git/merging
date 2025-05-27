@@ -4,22 +4,19 @@ import com.example.Factory.FiguraFactory;
 import com.example.Model.Figura;
 import com.example.Model.Griglia;
 import com.example.Model.LavagnaModel;
+import com.example.View.LavagnaView;
 import javafx.scene.paint.Color;
 
 import java.util.List;
 
 public class AggiungiGrigliaCommand implements Command {
 
-    private LavagnaModel lavagnaModel;
-    private FiguraFactory figuraFactory;
     private double x2, y2;
     private int nRighe, nColonne;
     private Color strokeColor;
     private Figura griglia;
 
-    public AggiungiGrigliaCommand(LavagnaModel lavagnaModel, FiguraFactory factory,int nRighe, int nColonne, double x2, double y2, Color strokeColor) {
-        this.lavagnaModel = lavagnaModel;
-        this.figuraFactory = factory;
+    public AggiungiGrigliaCommand(int nRighe, int nColonne, double x2, double y2, Color strokeColor) {
         this.nRighe = nRighe;
         this.nColonne = nColonne;
         this.x2 = x2; // larghezza lavagna
@@ -29,8 +26,8 @@ public class AggiungiGrigliaCommand implements Command {
     }
 
     public void execute() {
-        griglia = figuraFactory.creaFigura(nRighe, nColonne, x2 , y2, strokeColor, null);
-        lavagnaModel.aggiungiGriglia((Griglia) griglia);
+        Griglia griglia = new Griglia(nRighe, nColonne, x2 , y2, strokeColor);
+        LavagnaView.getInstance().aggiungiGriglia(griglia);
     }
 
 }
